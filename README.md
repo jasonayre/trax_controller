@@ -1,6 +1,29 @@
 # TraxController
 
-TODO: Write a gem description
+Resourceful more standardized controllers. Uses inherited resources. Geared towards api driven apps.
+
+### Standards
+
+More soon.
+
+
+
+``` ruby
+class Admin::Api::WidgetsController < ::Admin::Api::BaseController
+  include ::Trax::Controller
+
+  defaults :resource_class => ::Widget
+
+  def resource_serializer
+    ::Admin::Api::WidgetSerializer
+  end
+
+  #normally same as above unless overridden
+  def collection_serializer
+    ::Admin::Api::WidgetSerializer
+  end
+end
+```
 
 ## Installation
 
