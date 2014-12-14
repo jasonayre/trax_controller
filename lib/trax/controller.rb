@@ -16,20 +16,12 @@ module Trax
     autoload :Collection
     autoload :Resource
     autoload :InheritResources
+    autoload :ActionTypes
 
     include ::Trax::Controller::InheritResources
     include ::Trax::Controller::Collection::Base
     include ::Trax::Controller::Resource::Base
     include ::Trax::Controller::Actions
-
-    # inherit_resources
-
-
-
-    # included do
-    #   inherit_resources
-    # end
-
-
+    include ::Trax::Controller::ActionTypes
   end
 end
