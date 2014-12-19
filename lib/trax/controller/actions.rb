@@ -9,9 +9,9 @@ module Trax
 
       def index
         render :json => collection,
-        :meta => collection_response_meta,
-        :each_serializer => collection_serializer,
-        :root => collection_root
+               :meta => collection_response_meta,
+               :each_serializer => collection_serializer,
+               :root => collection_root
       end
 
       def create
@@ -21,7 +21,7 @@ module Trax
           end
 
           failure.json do
-            render_errors(:unprocessable_entity, *resource.errors.full_messages)
+            render_errors(:unprocessable_entity, resource_error_messages)
           end
         end
       end
@@ -33,7 +33,7 @@ module Trax
           end
 
           failure.json do
-            render_errors(:unprocessable_entity, *resource.errors.full_messages)
+            render_errors(:unprocessable_entity, resource_error_messages)
           end
         end
       end
@@ -45,7 +45,7 @@ module Trax
           end
 
           failure.json do
-            render_errors(:method_not_allowed, *resource_response_meta[:errors])
+            render_errors(:method_not_allowed, resource_response_meta[:errors])
           end
         end
       end
@@ -56,29 +56,41 @@ module Trax
 
       private
 
-      def render_resource(status = :ok)
-        render json: resource, serializer: resource_serializer, meta: resource_response_meta, status: status, scope: serialization_scope
-      end
-
-      def render_errors(status, *errors)
-        errors = errors.map { |str| str.last == "." ? str : str << "." }
-        render json: { meta: { errors: errors } }, status: status, serializer: nil
-      end
-
       def collection_serializer
         resource_serializer
-      end
-
-      def resource_serializer
-        "#{resource_class.name.demodulize}Serializer".constantize
       end
 
       def collection_root
         controller_name
       end
 
+      def resource_serializer
+        "#{resource_class.name.demodulize}Serializer".constantize
+      end
+
       def resource_root
         collection_root.singularize
+      end
+
+      def render_resource(status = :ok)
+        render json: resource, serializer: resource_serializer, meta: resource_response_meta, status: status, scope: serialization_scope
+      end
+
+      def render_errors(status, error_messages_hash)
+        render json: { meta: { errors: error_messages_hash } }, status: status, serializer: nil
+      end
+
+      def resource_error_messages
+        @resource_error_messages ||= begin
+          return nil unless resource.errors.any?
+
+          resource.errors.inject({}) do |result, error|
+            field = "#{error[0]}"
+            message = error[1]
+            result[field] = message.downcase.include?(field) ? message : "#{field.titleize} #{message}"
+            result
+          end
+        end
       end
 
       def serialized_resource

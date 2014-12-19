@@ -6,6 +6,7 @@ module Trax
       autoload :Base
       autoload :ResponseMeta
       autoload :Searchable
+      autoload :Pageable
     end
   end
 end

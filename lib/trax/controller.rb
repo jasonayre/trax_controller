@@ -2,6 +2,7 @@ require 'hashie/dash'
 require 'hashie/mash'
 require 'trax_core'
 require 'inherited_resources'
+require 'will_paginate'
 
 module Trax
   module Controller
