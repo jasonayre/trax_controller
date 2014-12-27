@@ -73,7 +73,7 @@ module Trax
       end
 
       def render_resource(status = :ok)
-        render json: resource, serializer: resource_serializer, meta: resource_response_meta, status: status, scope: serialization_scope
+        render json: resource, serializer: resource_serializer, meta: resource_response_meta, status: status, scope: serialization_scope, :root => resource_root
       end
 
       def render_errors(status, error_messages_hash)
