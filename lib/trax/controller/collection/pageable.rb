@@ -29,7 +29,7 @@ module Trax
 
         def collection_pagination_meta
           @collection_pagination_meta ||= ::Trax::Controller::Collection::Pageable::PAGINATION_META_METHODS.inject({}) do |h, key|
-            h[key] = collection.__send__(key)
+            h[key] = collection.try(key)
             h
           end
         end
