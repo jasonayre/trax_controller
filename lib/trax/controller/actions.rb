@@ -72,6 +72,12 @@ module Trax
         collection_root.singularize
       end
 
+      #will set the resource instance var to whatever you pass it, then render
+      def render_resource!(object)
+        instance_variable_set(:"@#{self.class.resources_configuration[:self][:instance_name]}", object)
+        render_resource
+      end
+
       def render_resource(status = :ok)
         render json: resource, serializer: resource_serializer, meta: resource_response_meta, status: status, scope: serialization_scope, :root => resource_root
       end
