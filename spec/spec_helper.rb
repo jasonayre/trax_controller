@@ -1,17 +1,26 @@
 require 'rubygems'
-require 'bundler'
+
+
+require 'bundler/setup'
+
+require 'combustion'
+
+
+Combustion.initialize! :all
+
 require 'simplecov'
 require 'pry'
 require 'trax_controller'
+
+RSpec.configure do |config|
+
+end
+# require_relative './support/controllers'
 
 SimpleCov.start do
   add_filter '/spec/'
 end
 
-RSpec.configure do |config|
-  config.before(:suite) do
-  end
-end
 
 Bundler.require(:default, :development, :test)
 

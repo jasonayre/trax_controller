@@ -21,6 +21,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "trax_core"
   spec.add_dependency "will_paginate"
   spec.add_development_dependency "rails"
+  spec.add_development_dependency 'combustion', '~> 0.5.3'
+
   spec.add_development_dependency "inherited_resources"
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
