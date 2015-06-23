@@ -21,6 +21,21 @@ module Trax
             end.all
           end
         end
+
+        def collection_searchable_meta
+          @collection_pagination_meta ||= ::Trax::Controller::Collection::Pageable::PAGINATION_META_METHODS.inject({}) do |h, key|
+            h[key] = collection.__send__(key)
+            h
+          end
+        end
+
+        def collection_response_meta
+          if collection_action?
+            super.merge!(:search_scopes => current_scopes)
+          else
+            super
+          end
+        end
       end
     end
   end
