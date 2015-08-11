@@ -70,7 +70,7 @@ module Trax
       end
 
       def render_collection(objects)
-        render :json => collection,
+        render :json => objects,
                :meta => collection_response_meta,
                :each_serializer => collection_serializer,
                :root => collection_root
