@@ -3,7 +3,7 @@ module Trax
     module Collection
       module Base
         extend ::ActiveSupport::Concern
-        
+
         included do
           class_attribute :collection_options
           self.collection_options = ::ActiveSupport::OrderedOptions.new

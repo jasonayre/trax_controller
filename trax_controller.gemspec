@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "will_paginate"
   spec.add_development_dependency "rails"
   spec.add_development_dependency "inherited_resources"
+  spec.add_development_dependency "active_model_serializers", "~> 0.9"
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "sqlite3"
@@ -29,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-pride"
   spec.add_development_dependency "pry-nav"
   spec.add_development_dependency "simplecov"
+  spec.add_development_dependency "rspec-rails"
   spec.add_development_dependency 'rspec-its', '~> 1'
   spec.add_development_dependency 'rspec-collection_matchers', '~> 1'
   spec.add_development_dependency 'guard', '~> 2'
