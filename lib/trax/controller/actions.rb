@@ -8,10 +8,7 @@ module Trax
       end
 
       def index
-        render :json => collection,
-               :meta => collection_response_meta,
-               :each_serializer => collection_serializer,
-               :root => collection_root
+        render_collection(collection)
       end
 
       def create
@@ -70,6 +67,13 @@ module Trax
 
       def resource_root
         collection_root.singularize
+      end
+
+      def render_collection(objects)
+        render :json => collection,
+               :meta => collection_response_meta,
+               :each_serializer => collection_serializer,
+               :root => collection_root
       end
 
       #will set the resource instance var to whatever you pass it, then render
