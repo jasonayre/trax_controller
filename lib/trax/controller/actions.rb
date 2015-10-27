@@ -7,11 +7,11 @@ module Trax
         respond_to :json
       end
 
-      def index
+      def index(collection: _collection, meta: _collection_response_meta, serializer: collection_serializer, root: collection_root)
         render :json => collection,
-               :meta => collection_response_meta,
-               :each_serializer => collection_serializer,
-               :root => collection_root
+               :meta => meta,
+               :each_serializer => serializer,
+               :root => root
       end
 
       def create
@@ -64,6 +64,15 @@ module Trax
         controller_name
       end
 
+      #this is to avoid circular reference argument that we would otherwise get with render_resource
+      def _collection
+        collection
+      end
+
+      def _resource
+        resource
+      end
+
       def resource_serializer
         "#{resource_class.name.demodulize}Serializer".constantize
       end
@@ -73,29 +82,27 @@ module Trax
       end
 
       #will set the resource instance var to whatever you pass it, then render
-      def render_resource!(object)
+      def render_resource!(object, **options)
         instance_variable_set(:"@#{self.class.resources_configuration[:self][:instance_name]}", object)
-        render_resource
+        render_resource(**options)
       end
 
-      def render_resource(status = :ok)
-        render json: resource, serializer: resource_serializer, meta: resource_response_meta, status: status, scope: serialization_scope, :root => resource_root
+      def render_resource(status = :ok, resource: _resource, serializer: resource_serializer, meta: resource_response_meta, scope: serialization_scope, root: resource_root)
+        render json: _resource, serializer: serializer, meta: meta, status: status, scope: scope, :root => root
       end
 
       def render_errors(status, error_messages_hash)
         render json: { meta: { errors: error_messages_hash } }, status: status, serializer: nil
       end
 
-      def resource_error_messages
-        @resource_error_messages ||= begin
-          return nil unless resource.errors.any?
+      def resource_error_messages(resource: current_resource)
+        return nil unless resource.errors.any?
 
-          resource.errors.inject({}) do |result, error|
-            field = "#{error[0]}"
-            message = error[1]
-            result[field] = message.downcase.include?(field) ? message : "#{field.titleize} #{message}"
-            result
-          end
+        resource.errors.inject({}) do |result, error|
+          field = "#{error[0]}"
+          message = error[1]
+          result[field] = message.downcase.include?(field) ? message : "#{field.titleize} #{message}"
+          result
         end
       end
 
