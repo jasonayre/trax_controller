@@ -4,8 +4,8 @@ module Trax
       module Searchable
         extend ::ActiveSupport::Concern
 
-        def search
-          index(meta: collection_response_meta, **options)
+        def search(**options)
+          index(**options)
         end
 
         def collection_response_meta

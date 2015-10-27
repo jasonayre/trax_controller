@@ -7,7 +7,7 @@ module Trax
         respond_to :json
       end
 
-      def index(collection: _collection, meta: _collection_response_meta, serializer: collection_serializer, root: collection_root)
+      def index(collection: _collection, meta: collection_response_meta, serializer: collection_serializer, root: collection_root)
         render :json => collection,
                :meta => meta,
                :each_serializer => serializer,
@@ -106,6 +106,7 @@ module Trax
         end
       end
 
+      #this metthod is in limbo because it appears this was removed from master branch of AMS?
       def serialized_resource
         @serialized_resource ||= resource_serializer.new(resource, scope: serialization_scope)
       end

@@ -3,6 +3,8 @@ require 'hashie/mash'
 require 'trax_core'
 require 'inherited_resources'
 require 'will_paginate'
+require 'active_model_serializers'
+require 'has_scope'
 
 module Trax
   module Controller
@@ -18,6 +20,8 @@ module Trax
     autoload :Resource
     autoload :InheritResources
     autoload :ActionTypes
+    autoload :Railtie
+    autoload :Serialization
 
     include ::Trax::Controller::InheritResources
     include ::Trax::Controller::Collection::Base
@@ -26,3 +30,5 @@ module Trax
     include ::Trax::Controller::ActionTypes
   end
 end
+
+::Trax::Controller::Railtie if defined?(::Rails)
