@@ -17,10 +17,11 @@ module Trax
 
     autoload :Actions
     autoload :Collection
+    autoload :Engine
     autoload :Resource
     autoload :InheritResources
     autoload :ActionTypes
-    autoload :Railtie
+    autoload :Engine
     autoload :Serialization
 
     include ::Trax::Controller::InheritResources
@@ -31,4 +32,4 @@ module Trax
   end
 end
 
-::Trax::Controller::Railtie if defined?(::Rails)
+::Trax::Controller::Engine if defined?(::Rails)

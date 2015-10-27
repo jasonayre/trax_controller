@@ -1,6 +1,6 @@
 module Trax
   module Controller
-    class Railtie < ::Rails::Railtie
+    class Engine < ::Rails::Engine
       initializer 'trax_controller.active_model_serializers' do |app|
         ::ActiveModel::Serializer.config.adapter = Trax::Controller::Serialization::Adapters::Json
       end
