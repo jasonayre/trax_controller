@@ -36,4 +36,171 @@ require 'spec_helper'
       }
     end
   end
+
+  context "overriding default resource actions and render resource" do
+    describe "#show_without_products" do
+      it {
+        get :show_without_products, :id => @shoes_category.id
+        json = ::JSON.parse(response.body)
+        expect(json["category"]).to_not have_key('products')
+      }
+    end
+
+    describe "#widget" do
+      it "render resource can have resource passed to it" do
+        get :widget, :id => @shoes_category.id
+        json = ::JSON.parse(response.body)
+        expect(json["category"]["name"]).to eq "whatever"
+      end
+    end
+
+    describe "#widget_with_renamed_root" do
+      it "allows root key to be overridden" do
+        get :widget_with_renamed_root, :id => @shoes_category.id
+        json = ::JSON.parse(response.body)
+        expect(json["widget"]["name"]).to eq "whatever"
+      end
+    end
+
+    describe "#show_by_calling_original_action" do
+      it "allows show method itself to be called passing in overridden options" do
+        get :show_by_calling_original_action, :id => @shoes_category.id
+        json = ::JSON.parse(response.body)
+        expect(json["show_by_calling_original_action"]["name"]).to eq @shoes_category.name
+      end
+    end
+  end
+
+  context '#create_with_modified_resource' do
+    let(:widget_name) { 'My New Widget' }
+    let(:widget_quantity) { 10 }
+    let(:params){ {
+      :format => :json,
+      :widget => widget_params
+    }}
+    let(:widget_params) { { :name => widget_name, :quantity => widget_quantity } }
+    before { post :create_with_modified_resource, params }
+
+    context 'success' do
+      it { expect(response).to be_successful }
+      it {
+        json = JSON.parse response.body
+        expect(json).to have_key("widget")
+      }
+      it { expect(response.status).to eq 201 }
+    end
+
+    context 'failure' do
+      let(:widget_name) { 'My New Widget' }
+      let(:widget_quantity) { 0 }
+
+      context 'default failure action' do
+        before { post :create_with_modified_resource, params }
+
+        it { expect(response).to_not be_successful }
+        it {
+          json = JSON.parse response.body
+          expect(json["meta"]["errors"]).to have_key("quantity")
+        }
+        it { expect(response.status).to eq 422 }
+      end
+    end
+  end
+
+  context '#create' do
+    let(:category_name) { 'My New Category'}
+    let(:params){ {
+      :format => :json,
+      :category => category_params
+    }}
+    let(:category_params) { { :name => category_name } }
+
+    context 'success' do
+      context 'with default create action' do
+        before { post :create, params }
+
+        it { expect(response).to be_successful }
+        it {
+          json = JSON.parse response.body
+          expect(json).to have_key("category")
+        }
+        it { expect(response.status).to eq 201 }
+      end
+
+      context 'allows overrides' do
+        context 'response code override' do
+          before { post :create_with_modified_response_codes, params }
+
+          it { expect(response.status).to eq 202 }
+        end
+      end
+    end
+
+    context 'failure' do
+      let(:category_name) { 'a' }
+
+      context 'default create action' do
+        before { post :create, params }
+
+        it { expect(response).to_not be_successful }
+        it {
+          json = JSON.parse response.body
+          expect(json["meta"]["errors"]).to have_key("name")
+        }
+        it { expect(response.status).to eq 422 }
+      end
+
+      context 'allows overrides' do
+        context 'response code override' do
+          before { post :create_with_modified_response_codes, params }
+
+          it { expect(response.status).to eq 404 }
+        end
+      end
+    end
+  end
+
+  context '#update' do
+    let(:category) { ::Category.create(:name => category_name) }
+    let(:category_name) { 'My New Category'}
+    let(:new_category_name) { 'mynewcategoryname' }
+    let(:params){ {
+      :format => :json,
+      :id => category.id,
+      :category => category_params
+    }}
+    let(:category_params) { { :name => new_category_name } }
+
+    context 'success' do
+      context 'with default update action' do
+        before { put(:update, params) }
+
+        it { expect(response).to be_successful }
+        it {
+          json = JSON.parse response.body
+          expect(json).to have_key("category")
+        }
+        it {
+          json = JSON.parse response.body
+          expect(json["category"]["name"]).to eq(new_category_name)
+        }
+        it { expect(response.status).to eq 200 }
+      end
+    end
+
+    context 'failure' do
+      let(:new_category_name) { 'a' }
+
+      context 'default update action' do
+        before { put :update, params }
+
+        it { expect(response).to_not be_successful }
+        it {
+          json = JSON.parse response.body
+          expect(json["meta"]["errors"]).to have_key("name")
+        }
+        it { expect(response.status).to eq 422 }
+      end
+    end
+  end
 end

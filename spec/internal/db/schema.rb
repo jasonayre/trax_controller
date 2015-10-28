@@ -27,10 +27,11 @@
 
   create_table "widgets", :force => true do |t|
     t.string "uuid"
-    t.string  "email_address"
+    t.string "name"
     t.string  "subdomain"
     t.string  "website"
     t.integer  "status"
+    t.integer  "quantity"    
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
