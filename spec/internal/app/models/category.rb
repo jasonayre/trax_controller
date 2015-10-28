@@ -1,5 +1,5 @@
 class Category < ::ActiveRecord::Base
-  validates_presence_of(:name)
+  validates :name, :length => { :minimum => 5 }
 
   has_many :products
 end

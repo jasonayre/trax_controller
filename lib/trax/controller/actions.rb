@@ -14,44 +14,51 @@ module Trax
                :root => root
       end
 
-      def create
+      #setting resource ivar stops it from trying to create via the default behavior
+      def create(success_status:201, failure_status: :unprocessable_entity, **options)
+        set_resource_ivar(options[:resource]) if options.has_key?(:resource)
+
         create! do |success, failure|
           success.json do
-            render_resource(201)
+            render_resource(success_status, **options)
           end
 
           failure.json do
-            render_errors(:unprocessable_entity, resource_error_messages)
+            render_errors(failure_status, **options)
           end
         end
       end
 
-      def update
+      def update(success_status:200, failure_status: :unprocessable_entity, **options)
+        set_resource_ivar(options[:resource]) if options.has_key?(:resource)
+
         update! do |success, failure|
           success.json do
-            render_resource
+            render_resource(success_status, **options)
           end
 
           failure.json do
-            render_errors(:unprocessable_entity, resource_error_messages)
+            render_errors(failure_status, **options)
           end
         end
       end
 
-      def destroy
+      def destroy(success_status:200, failure_status: :method_not_allowed, **options)
+        set_resource_ivar(options[:resource]) if options.has_key?(:resource)
+
         destroy! do |success, failure|
           success.json do
-            render_resource
+            render_resource(success_status, **options)
           end
 
           failure.json do
-            render_errors(:method_not_allowed, resource_response_meta[:errors])
+            render_errors(failure_status, **options)
           end
         end
       end
 
-      def show
-        render_resource
+      def show(*args, **options)
+        render_resource(*args, **options)
       end
 
       private
@@ -88,14 +95,15 @@ module Trax
       end
 
       def render_resource(status = :ok, resource: _resource, serializer: resource_serializer, meta: resource_response_meta, scope: serialization_scope, root: resource_root)
-        render json: _resource, serializer: serializer, meta: meta, status: status, scope: scope, :root => root
+        render json: resource, serializer: serializer, meta: meta, status: status, scope: scope, root: root
       end
 
-      def render_errors(status, error_messages_hash)
-        render json: { meta: { errors: error_messages_hash } }, status: status, serializer: nil
+      def render_errors(status = :unprocessable_entity, error_messages_hash:{}, **options)
+        errors = error_messages_hash.merge(resource_error_messages(**options))
+        render json: { meta: { errors: errors } }, status: status, serializer: nil
       end
 
-      def resource_error_messages(resource: current_resource)
+      def resource_error_messages(resource: _resource, **options)
         return nil unless resource.errors.any?
 
         resource.errors.inject({}) do |result, error|
