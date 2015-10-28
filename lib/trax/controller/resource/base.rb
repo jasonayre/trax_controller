@@ -9,7 +9,6 @@ module Trax
         end
 
         include ::Trax::Controller::Resource::ResponseMeta
-        include ::Trax::Controller::Resource::Errors
       end
     end
   end
