@@ -14,8 +14,12 @@ module Trax
 
           private
 
+          def get_hash(serializer, options={})
+            self.class.new(serializer, :nested => true).serializable_hash(options)
+          end
+
           def collection_serializable_hash(options={})
-            serializer.map { |s| FlattenJson.new(s).serializable_hash(options) }
+            serializer.map { |s| get_hash(s, options) }
           end
 
           def is_collection?
@@ -39,11 +43,11 @@ module Trax
                 array_serializer = association_serializer
 
                 resource_result[association.key] = array_serializer.map do |item|
-                  cache_check(item) { self.class.new(item, :nested => true).serializable_hash }
+                  cache_check(item) { get_hash(item) }
                 end
               else
                 resource_result[association.key] = if association_serializer && association_serializer.object
-                  cache_check(association_serializer) { self.class.new(association_serializer, :nested => true).serializable_hash }
+                  cache_check(association_serializer) { get_hash(association_serializer) }
                 elsif association_options[:virtual_value]
                   association_options[:virtual_value]
                 end
