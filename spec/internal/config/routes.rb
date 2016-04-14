@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :products, :defaults => { :format => :json }
+  resources :widgets, :defaults => { :format => :json }
   resources :categories, :defaults => { :format => :json } do
     collection do
       post 'create_with_modified_response_codes'

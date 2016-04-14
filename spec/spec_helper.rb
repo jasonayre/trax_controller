@@ -18,6 +18,10 @@ end
 
 ::RSpec.configure do |config|
   config.include RSpec::Rails::RequestExampleGroup, type: :feature
+
+  config.before(:all) do
+    ::Trax::Controller.config.authorization_adapter = ::Trax::Controller::Authorization::Pundit::Adapter
+  end
 end
 
 ::Bundler.require(:default, :development, :test)

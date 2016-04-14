@@ -1,9 +1,13 @@
+require 'pundit'
+
 module Trax
   module Controller
     module Authorization
       module Pundit
         module Adapter
           extend ::ActiveSupport::Concern
+
+          include ::Pundit
 
           included do
             rescue_from ::Pundit::NotAuthorizedError, :with => :render_pundit_errors
@@ -18,6 +22,7 @@ module Trax
             self.class._policy_class.new(current_user, record)
           end
 
+          #not included into controller
           def self.authorization_action_for(action_name)
             "::Trax::Controller::Authorization::Pundit::Actions::#{action_name.to_s.camelize}".safe_constantize
           end

@@ -13,18 +13,15 @@ class WidgetPolicy < Trax::Controller::Authorization::Pundit::BasePolicy
 
   def show?
     @result &&= user.can_read_widgets
-    @result
   end
 
   def update?
     @result &&= !resource.is_read_only
     @result &&= user.can_update_widgets
-    @result
   end
 
   def destroy?
     @result &&= user.can_destroy_widgets
     @result &&= user.is_admin
-    @result
   end
 end

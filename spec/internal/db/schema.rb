@@ -22,6 +22,10 @@
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
+    t.boolean "can_destroy_widgets"
+    t.boolean "can_create_widgets"
+    t.boolean "can_read_widgets"
+    t.boolean "can_update_widgets"
     t.boolean "is_admin"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
@@ -34,6 +38,7 @@
     t.string  "website"
     t.integer  "status"
     t.integer  "quantity"
+    t.boolean "is_read_only"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end

@@ -2,6 +2,7 @@ module Trax
   module Controller
     module Authorize
       extend ::ActiveSupport::Concern
+
       include ::Trax::Controller.config.authorization_adapter
 
       STANDARD_ACTIONS = [ :index, :search, :show, :destroy, :update, :create, :new ]
