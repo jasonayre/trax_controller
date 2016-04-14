@@ -99,7 +99,7 @@ module Trax
       end
 
       def render_errors(status = :unprocessable_entity, error_messages_hash:{}, **options)
-        errors = error_messages_hash.merge(resource_error_messages(**options))
+        errors = error_messages_hash.merge(resource_error_messages(**options) || {})
         render json: { meta: { errors: errors } }, status: status, serializer: nil
       end
 
