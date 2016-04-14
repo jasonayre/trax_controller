@@ -22,6 +22,7 @@
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
+    t.boolean "is_admin"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
@@ -32,7 +33,7 @@
     t.string  "subdomain"
     t.string  "website"
     t.integer  "status"
-    t.integer  "quantity"    
+    t.integer  "quantity"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
