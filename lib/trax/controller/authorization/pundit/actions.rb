@@ -9,6 +9,7 @@ module Trax
           autoload :Destroy
           autoload :Index
           autoload :New
+          autoload :Read
           autoload :Search
           autoload :Show
           autoload :Update
