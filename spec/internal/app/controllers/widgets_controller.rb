@@ -12,7 +12,12 @@ class WidgetsController < ::ApplicationController
     params.require(:widget).permit(:name, :quantity)
   end
 
+  def user_email
+    params[:user_email]
+  end
+
   def current_user
-    @current_user ||= ::User.find_by(:email => 'kanyewest@theleatherjoggingpants.com')
+    @current_user ||= ::User.find_by(:email => user_email)
+    binding.pry
   end
 end
