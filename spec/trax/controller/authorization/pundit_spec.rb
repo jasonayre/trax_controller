@@ -153,7 +153,6 @@ require 'spec_helper'
           it {
             expect(response).to_not be_ok
             json = JSON.parse response.body
-            binding.pry
             unauthorized_result_expectations.call(json)
           }
         end
