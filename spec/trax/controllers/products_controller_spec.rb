@@ -23,8 +23,6 @@ require 'spec_helper'
           expect(json["meta"]["pagination"]).to have_key(k)
         }
       end
-
-
     end
   end
 

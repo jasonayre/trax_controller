@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "will_paginate"
   spec.add_dependency "has_scope"
   spec.add_development_dependency "rails"
-  spec.add_development_dependency "inherited_resources"
+  spec.add_development_dependency "inherited_resources", "~> 1.5.1"
   spec.add_development_dependency 'combustion', '~> 0.5.3'
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
@@ -34,9 +34,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec-its', '~> 1'
   spec.add_development_dependency 'rspec-collection_matchers', '~> 1'
   spec.add_development_dependency 'guard', '~> 2'
-  spec.add_development_dependency 'guard-rspec', '~> 4'
   spec.add_development_dependency 'guard-bundler', '~> 2'
   spec.add_development_dependency 'rb-fsevent'
   spec.add_development_dependency 'terminal-notifier-guard'
-
+  spec.add_development_dependency 'pundit'
 end
