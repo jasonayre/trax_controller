@@ -22,6 +22,9 @@ end
   config.before(:all) do
     ::Trax::Controller.config.authorization_adapter = ::Trax::Controller::Authorization::Pundit::Adapter
   end
+
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
 end
 
 ::Bundler.require(:default, :development, :test)
