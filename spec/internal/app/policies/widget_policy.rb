@@ -16,7 +16,6 @@ class WidgetPolicy < Trax::Controller::Authorization::Pundit::BasePolicy
   end
 
   def update?
-    @result &&= !resource.is_read_only
     @result &&= user.can_update_widgets
   end
 

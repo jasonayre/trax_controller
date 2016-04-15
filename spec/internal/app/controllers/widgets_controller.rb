@@ -18,6 +18,5 @@ class WidgetsController < ::ApplicationController
 
   def current_user
     @current_user ||= ::User.find_by(:email => user_email)
-    binding.pry
   end
 end

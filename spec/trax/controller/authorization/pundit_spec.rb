@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-::RSpec.describe ::Trax::Controller::Authorization::Pundit do
+::RSpec.describe WidgetsController do
   before(:all) do
     ::Trax::Controller.config.authorization_adapter = ::Trax::Controller::Authorization::Pundit::Adapter
 
@@ -13,8 +13,6 @@ require 'spec_helper'
 
   context "WidgetsController" do
     context "Unit Test" do
-      subject { ::WidgetsController }
-
       context ".actions_to_authorize" do
         {
           :index => Trax::Controller::Authorization::Pundit::Actions::Index,
@@ -24,13 +22,13 @@ require 'spec_helper'
           :update => Trax::Controller::Authorization::Pundit::Actions::Update
         }.each_pair do |k,v|
           it "includes the pundit action for #{k}" do
-            expect(subject.ancestors).to include(v)
+            expect(subject.class.ancestors).to include(v)
           end
         end
       end
     end
 
-    describe WidgetsController, :type => :controller do
+    describe "WidgetsController", :type => :controller do
       let!(:user1) {
         ::User.create(
           :email => 'kanyewest@theleatherjoggingpants.com',
@@ -46,7 +44,7 @@ require 'spec_helper'
         ::User.create(
           :email => 'kanyewest@waterbottledesign.com',
           :can_read_widgets => false,
-          :can_update_widgets => true,
+          :can_update_widgets => false,
           :can_create_widgets => false,
           :can_destroy_widgets => false,
           :is_admin => true
@@ -56,7 +54,7 @@ require 'spec_helper'
       let(:user_who_can) {
         {
           :read_widgets => user1,
-          :update_widgets => user2,
+          :update_widgets => user1,
           :create_widgets => user1,
           :destroy_widgets => user1
         }
@@ -65,7 +63,7 @@ require 'spec_helper'
       let(:user_who_cannot) {
         {
           :read_widgets => user2,
-          :update_widgets => user1,
+          :update_widgets => user2,
           :create_widgets => user2,
           :destroy_widgets => user2
         }
@@ -155,11 +153,12 @@ require 'spec_helper'
           it {
             expect(response).to_not be_ok
             json = JSON.parse response.body
+            binding.pry
             unauthorized_result_expectations.call(json)
           }
         end
 
-        context "user can update widgets", :focus => true do
+        context "user can update widgets" do
           let(:current_user) { user_who_can[:update_widgets] }
           let(:updated_widget_name) { 'Kanyes water bottle' }
           let(:params){ {
@@ -172,12 +171,8 @@ require 'spec_helper'
 
           before { put :update, request_params }
 
-          it { expect(response).to_not be_successful }
-          it { expect(response.status).to eq 403 }
-          it {
-
-            expect(response).to be_ok
-          }
+          it { expect(response).to be_successful }
+          it { expect(response).to be_ok }
         end
       end
     end

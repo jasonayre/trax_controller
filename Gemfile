@@ -7,5 +7,5 @@ gem 'active_model_serializers', :github => 'rails-api/active_model_serializers',
 
 group :test do
   gem 'activerecord'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.1'
 end
