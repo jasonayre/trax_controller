@@ -4,7 +4,7 @@ class WidgetPolicy < Trax::Controller::Authorization::Pundit::BasePolicy
   end
 
   def index?
-    true
+    @result &&= user.can_read_widgets
   end
 
   def create?
