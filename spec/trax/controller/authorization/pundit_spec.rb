@@ -104,6 +104,31 @@ require 'spec_helper'
         end
       end
 
+      describe '#index' do
+        context 'user can read widgets' do
+          let(:current_user) { user_who_can[:read_widgets] }
+
+          it 'is authorized' do
+            get :index, common_params
+            expect(response).to be_ok
+            json = JSON.parse response.body
+            expect(json).to have_key('widgets')
+          end
+        end
+
+        context 'user cannot read widgets' do
+          let(:current_user) { user_who_cannot[:read_widgets] }
+
+          it do
+            get :index, common_params
+            json = JSON.parse response.body
+            expect(response).to_not be_ok
+
+            unauthorized_result_expectations.call(json)
+          end
+        end
+      end
+
       describe '#create' do
         context "user can create widgets" do
           let(:current_user) { user_who_can[:create_widgets] }
