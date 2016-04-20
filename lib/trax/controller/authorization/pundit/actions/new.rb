@@ -6,9 +6,9 @@ module Trax
           module New
             extend ::ActiveSupport::Concern
 
-            def new(*args, *options)
+            def new(*args, **options)
               authorize(build_resource)
-              super(*args, *options)
+              super(*args, **options)
             end
           end
         end
