@@ -9,7 +9,7 @@ module Trax
             def update_resource(object, attributes={})
               object.assign_attributes(*attributes)
               authorize(object)
-              super(object, attributes)
+              object.save
             end
           end
         end
