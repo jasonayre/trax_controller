@@ -88,6 +88,16 @@ module Trax
         collection_root.singularize
       end
 
+      #this overwrite allows a separate set of params to be used for create/update
+      #i.e. product_params_for_create, product_params_for_update
+      def resource_params_method_name
+        if respond_to?("#{resource_instance_name}_params_for_#{params[:action]}", true)
+          "#{resource_instance_name}_params_for_#{params[:action]}"
+        else
+          super
+        end
+      end
+
       #will set the resource instance var to whatever you pass it, then render
       def render_resource!(object, **options)
         instance_variable_set(:"@#{self.class.resources_configuration[:self][:instance_name]}", object)
