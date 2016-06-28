@@ -118,6 +118,17 @@ module Trax
         render json: { meta: { errors: errors } }, status: status, serializer: nil
       end
 
+      def render_resource_action_response(success_status: 200, failure_status: :method_not_allowed, **options)
+        respond_with_dual_blocks(resource, options) do |success, failure|
+          success.json do
+            render_resource(success_status, **options)
+          end
+          failure.json do
+            render_errors(failure_status, **options)
+          end
+        end
+      end
+
       def resource_error_messages(resource: _resource, **options)
         return nil unless resource.errors.any?
 
