@@ -4,6 +4,7 @@ module Trax
       extend ::ActiveSupport::Autoload
 
       autoload :Base
+      autoload :NestedSearchScopes
       autoload :ResponseMeta
       autoload :Searchable
       autoload :Sortable
