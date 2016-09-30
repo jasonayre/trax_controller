@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "active_model_serializers", "~> 0.10"
   spec.add_dependency "trax_core"
   spec.add_dependency "will_paginate"
   spec.add_dependency "has_scope"
