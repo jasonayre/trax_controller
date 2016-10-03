@@ -5,7 +5,7 @@ module Trax
         class Json < ::ActiveModelSerializers::Adapter::Json
           def initialize(serializer, options = {})
             super
-            options[:include] = '**'
+            options[:include] = "**"
           end
         end
       end

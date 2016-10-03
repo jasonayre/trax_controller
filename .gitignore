@@ -7,8 +7,10 @@
 /pkg/
 /spec/reports/
 /tmp/
+/vendor/
 *.bundle
 *.so
 *.o
 *.a
+*.sqlite
 mkmf.log
