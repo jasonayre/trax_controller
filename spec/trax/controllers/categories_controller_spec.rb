@@ -2,11 +2,14 @@ require 'spec_helper'
 
 ::RSpec.describe CategoriesController, :type => :controller do
   before(:all) do
-    @shoes_category = ::Category.create(:name => 'mens shoes')
-    @watches_category = ::Category.create(:name => 'mens watches')
+    @shoes_category = ::Category.create!(:name => 'mens shoes')
+    @watches_category = ::Category.create!(:name => 'mens watches')
+    @apparels_category = ::Category.create!(:name => 'mens apparels')
+    @shirts_category = @apparels_category.subcategories.create(:name => 'mens shirts')
 
-    @product1 = ::Product.create(:name => "DC Villan", :quantity => 0, :in_stock => false, :category => @shoes_category)
-    @product2 = ::Product.create(:name => "Nixon Rotolog", :quantity => 2, :in_stock => true, :category => @watches_category)
+    @product1 = ::Product.create!(:name => "DC Villan", :quantity => 0, :in_stock => false, :category => @shoes_category)
+    @product2 = ::Product.create!(:name => "Nixon Rotolog", :quantity => 2, :in_stock => true, :category => @watches_category)
+    @product3 = ::Product.create!(:name => "T-Shirt", :quantity => 3, :in_stock => true, :category => @apparels_category)
   end
 
   context '#index' do
@@ -67,6 +70,24 @@ require 'spec_helper'
         get :show_by_calling_original_action, :id => @shoes_category.id
         json = ::JSON.parse(response.body)
         expect(json["show_by_calling_original_action"]["name"]).to eq @shoes_category.name
+      end
+    end
+
+    describe "#product_with_category" do
+      it "deeply serializes" do
+        get :product_with_category, :id => @product3.id
+        json = ::JSON.parse(response.body)
+        expect(json["product"]).to eq(
+          "name" => @product3.name,
+          "category" => {
+            "name" => @apparels_category.name,
+            "subcategories" => [
+              { "name" => @shirts_category.name,
+                "subcategories" => []
+              }
+            ]
+          }
+        )
       end
     end
   end

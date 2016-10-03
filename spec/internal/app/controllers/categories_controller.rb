@@ -33,6 +33,10 @@ class CategoriesController < ::ApplicationController
     show(serializer: ::CategoriesSerializer, root: 'show_by_calling_original_action')
   end
 
+  def product_with_category
+    render_resource(serializer: ::ProductWithCategorySerializer, root: 'product', resource: Product.find(params[:id]))
+  end
+
   private
 
   def category_params
