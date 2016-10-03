@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get 'show_by_calling_original_action'
       get 'widget'
       get 'widget_with_renamed_root'
+      get 'product_with_category'
     end
   end
 end
