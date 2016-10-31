@@ -19,7 +19,11 @@ module Trax
           end
 
           def policy(record)
-            self.class._policy_class.new(current_user, record)
+            if self.class._policy_class.class.is_a?(Class)
+              self.class._policy_class.new(current_user, record)
+            else
+              self.class._policy_class.call(record).new(current_user, record)
+            end
           end
 
           #not included into controller
