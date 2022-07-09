@@ -24,6 +24,7 @@ module Trax
     autoload :Resource
     autoload :InheritResources
     autoload :ActionTypes
+    autoload :PermitParamsFor
     autoload :Serialization
 
     @configuration ||= ::Trax::Controller::Config.new
