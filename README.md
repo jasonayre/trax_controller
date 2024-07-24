@@ -6,7 +6,8 @@ Resourceful more standardized controllers. Uses inherited resources. Geared towa
 
 More soon.
 
-
+### Versions
+Please use >= 1.0.0 if you are using ruby 3, or 0.1.4 if you are using <= ruby 3.0
 
 ``` ruby
 class Admin::Api::WidgetsController < ::Admin::Api::BaseController
