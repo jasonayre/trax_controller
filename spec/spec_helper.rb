@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler'
+require 'bigdecimal'
 require 'combustion'
 require 'pry'
 require 'active_record'
