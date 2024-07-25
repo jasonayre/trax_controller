@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Resourceful, standardized controllers}
   spec.homepage      = "http://www.github.com/jasonayre"
   spec.license       = "MIT"
-  spec.required_ruby_version = '<= 3.0'
+  spec.required_ruby_version = '>= 3.0'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
@@ -23,10 +23,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency "trax_core"
   spec.add_dependency "will_paginate"
   spec.add_dependency "has_scope"
+  spec.add_dependency "base64"
   spec.add_development_dependency "rails"
   spec.add_development_dependency "inherited_resources", "~> 1.5.1"
-  spec.add_development_dependency 'combustion', '~> 0.5.3'
-  spec.add_development_dependency "bundler", "~> 1.6"
+  spec.add_development_dependency "bigdecimal"
+  spec.add_development_dependency 'combustion', '~> 1.5.0'
+  spec.add_development_dependency "bundler", "~> 2.5.9"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "rspec"
